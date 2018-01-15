@@ -1,0 +1,42 @@
+/* .body {
+  background-image: url(http://htmlcolorcodes.com/assets/images/html-color-codes-color-tutorials-hero-00e10b1f.jpg);
+  opacity: .5;
+} */
+
+
+html {
+  overflow-y: hidden;
+}
+
+.brand-logo {
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+}
+
+.container {
+  margin-top: 50px;
+  height: 800px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.margin {
+  padding: : 10px;
+}
+
+
+.card {
+      margin: .5rem 15px -9rem 45px !important;
+      border-radius: 20px;
+}
+.card-content {
+  padding: 15px !important;
+}
+
+p {
+  margin-top: -10px !important;
+}
+
+input {
+  display: none;
+}
