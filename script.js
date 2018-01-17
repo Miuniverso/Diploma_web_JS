@@ -65,6 +65,7 @@ function catchPhoto() {
     photoCanvas.width = width;
     photoCanvas.height = height;
     ctx.drawImage(video, 0, 0, width, height);
+    console.log('Захват снимка');
     return photoCanvas.toDataURL('image/png');
   }
 };
