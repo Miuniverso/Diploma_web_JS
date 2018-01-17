@@ -1,14 +1,109 @@
 const btnFile = document.querySelector('.file');
 const btnCamera = document.querySelector('.camera');
+const drawCanvas = document.querySelector('.brush');
 const inputFile = document.querySelector("input[type=file]");
-const container = document.querySelector('.container')
+const container = document.querySelectorAll('.container')[0];
+const sendCanvas = document.querySelector('.send-canvas');
+const video = document.querySelector('video');
 
 inputFile.addEventListener('change', addFile);
-
+btnCamera.addEventListener('click', useWebCamera);
+drawCanvas.addEventListener('click', draw)
 container.addEventListener('drop', onFilesDrop);
+sendCanvas.addEventListener('click', sendCns)
 container.addEventListener('dragover', event => {
   event.preventDefault();
   });
+
+
+
+function useWebCamera() {
+  document.getElementById('photo').classList.remove('hidden');
+
+  navigator.mediaDevices
+    .getUserMedia({video: true, audio: false})
+    .then((stream) => {
+      video.src = URL.createObjectURL(stream);
+      video.play();
+    })
+    .catch(err => console.warn('oh noes'));
+};
+
+
+
+function draw() {
+  console.log('draw');
+  document.querySelector('#draw').classList.remove('hidden');
+};
+
+function sendCns() {
+  console.log('send canvas!');
+  document.querySelector('#draw').classList.add('hidden');
+  };
+
+
+let canvasBody = document.getElementById("draw-canvas"),
+    canvas = canvasBody.getContext("2d"),
+
+    w = canvasBody.width = canvas.width = window.innerWidth,
+    h = canvasBody.height = canvas.height = window.innerHeight,
+    tick = 0,
+    newTick = tick + 1,
+    painting = false;
+    lastX = 0,
+    lastY = 0,
+    canvas.lineJoin = 'round';
+    canvas.lineCap = 'round';
+    canvas.lineWidth = 20;
+    canvas.strokeStyle = "blue";
+
+
+  // рисуем
+  // при нажатии левой клавиши ловим положение курсора, чтобы с этой точки рисовать линию (изначально координаты (0, 0) )
+  canvasBody.onmousedown = function(evt) {
+    const posX = evt.pageX,
+          posY = evt.pageY;
+    [lastX, lastY] = [posX, posY]
+    painting = true;
+  };
+
+  // не рисуем
+  canvasBody.onmouseup = function() {
+    painting = false;
+  };
+
+
+  // курсор за гранью полотна
+  canvasBody.addEventListener("mouseleave", (evt) => {
+    painting = false;
+  });
+
+  // чистим холст
+  canvasBody.addEventListener('dblclick',  function() {
+    canvas.clearRect(0, 0, w, h);
+  });
+
+  // процесс рисования
+  canvasBody.addEventListener("mousemove", function(evt) {
+    const posX = evt.pageX,
+          posY = evt.pageY;
+
+    // если рисуем
+    if(painting) {
+      ++tick;
+
+      // если пошла итерация
+      if(newTick) {
+        canvas.beginPath();
+        canvas.moveTo(lastX, lastY);
+        canvas.lineTo(posX, posY);
+        canvas.stroke();
+        [lastX, lastY] = [posX, posY];
+        console.log('Пошла рисовка!', canvas.lineWidth);
+      }
+    }
+});
+
 
 function onFilesDrop(event) {
   event.preventDefault();
@@ -18,10 +113,6 @@ function onFilesDrop(event) {
     console.log(file.name)
   });
 };
-
-
-
-
 
 
 function addFile(event) {
@@ -62,64 +153,3 @@ function addFile(event) {
   //   console.log(file.name)
   // });
 }
-
-
-//
-//
-// // ------------------
-//
-// var wsUri = "wss://echo.websocket.org/";
-//   var output;
-//
-//   function init()
-//   {
-//     output = document.getElementById("output");
-//     testWebSocket();
-//   }
-//
-//   function testWebSocket()
-//   {
-//     websocket = new WebSocket(wsUri);
-//     websocket.onopen = function(evt) { onOpen(evt) };
-//     websocket.onclose = function(evt) { onClose(evt) };
-//     websocket.onmessage = function(evt) { onMessage(evt) };
-//     websocket.onerror = function(evt) { onError(evt) };
-//   }
-//
-//   function onOpen(evt)
-//   {
-//     writeToScreen("CONNECTED");
-//     doSend("WebSocket rocks");
-//   }
-//
-//   function onClose(evt)
-//   {
-//     writeToScreen("DISCONNECTED");
-//   }
-//
-//   function onMessage(evt)
-//   {
-//     writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-//     websocket.close();
-//   }
-//
-//   function onError(evt)
-//   {
-//     writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-//   }
-//
-//   function doSend(message)
-//   {
-//     writeToScreen("SENT: " + message);
-//     websocket.send(message);
-//   }
-//
-//   function writeToScreen(message)
-//   {
-//     var pre = document.createElement("p");
-//     pre.style.wordWrap = "break-word";
-//     pre.innerHTML = message;
-//     output.appendChild(pre);
-//   }
-//
-//   window.addEventListener("load", init, false);
