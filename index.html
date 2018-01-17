@@ -18,10 +18,51 @@
        </div>
       </nav>
 
-       <!-- <div id="output">Здесь будет сокет</div> -->
-
       <div class="container orange lighten-5">
 
+        <!-- web-камера -->
+        <div class="hidden container" id="photo">
+          <video></video>
+          <img>
+          <canvas id="photo-canvas" class="hidden"></canvas>
+          <nav class="center photo-btns">
+            <ul class="center" id="btns">
+              <li><a class="btn-floating disabled"><i class="material-icons">delete</i></a></li>
+              <li class="center"><a class="btn-floating btn-large red"><i class=" large material-icons">photo_camera</i></a></li>
+              <li class="right"><a class="btn-floating red disabled"><i class="material-icons">send</i></a></li>
+            </ul>
+          </nav>
+        </div>
+
+
+        <!-- канвас -->
+        <div class="hidden container" id="draw">
+          <canvas id="draw-canvas"></canvas>
+          <nav class="colors center transparent">
+              <ul class="center">
+                <li>
+                  <span>Выберите цвет</span>
+                </li>
+                <li class="draw-color"><a class="draw btn-floating red"></a></li>
+                <li class="draw-color"><a class="draw btn-floating blue"></a></li>
+                <li class="draw-color"><a class="draw btn-floating black"></a></li>
+                <li class="draw-color"><a class="draw btn-floating green"></a></li>
+                <li class="draw-color"><a class="draw btn-floating orange"></a></li>
+
+                <li>
+                  <span class="right-align">Выберите толщину линии</span>
+                </li>
+                <li class="draw-color right-align waves-effect waves-dark">10</li>
+                <li class="draw-color right-align waves-effect waves-dark">30</li>
+                <li class="draw-color right-align waves-effect waves-dark">60</li>
+                <li>
+                  <button class="btn waves-effect waves-light send-canvas" type="submit" name="action">Отправить</button>
+                </li>
+            </ul>
+        </nav>
+      </div>
+
+        <!-- чат -->
         <div class="row margin">
         <div class="col s6">
           <div class="card">
@@ -29,13 +70,11 @@
               <img src="https://4.bp.blogspot.com/-SOwlSY_1TlQ/VGDoWuuwYhI/AAAAAAAAB_M/v5rL5n38FGE/s1600/background_03.png">
             </div>
             <div class="card-content">
-              <p class="col s6 left-align grey-text text-darken-4">Anonimus #1</p>
               <p class="col s6 right-align grey-text text-darken-4">time:time</p>
           </div>
         </div>
       </div>
         </div>
-
 
         <div class="row margin">
         <div class="col s6 push-s6">
@@ -44,7 +83,6 @@
               <img src="https://avatars.mds.yandex.net/get-pdb/27625/2611a963-dab3-4c3f-a52c-626288e49488/s800">
             </div>
             <div class="card-content">
-              <p class="col s6 left-align grey-text text-darken-4">Anonimus #1</p>
               <p class="col s6 right-align grey-text text-darken-4">time:time</p>
           </div>
         </div>
@@ -58,33 +96,27 @@
               <img src="http://w-hatsapp.ru/wp-content/uploads/2017/05/2-2.png">
             </div>
             <div class="card-content">
-              <p class="col s6 left-align grey-text text-darken-4">Anonimus #1</p>
               <p class="col s6 right-align grey-text text-darken-4">time:time</p>
           </div>
         </div>
         </div>
         </div>
-
 
         <div class="row margin">
         <div class="col s6 push-s6">
           <div class="card">
             <div class="card-image">
-              <img src="https://4.bp.blogspot.com/-SOwlSY_1TlQ/VGDoWuuwYhI/AAAAAAAAB_M/v5rL5n38FGE/s1600/background_03.png">
+              <img src="https://cdn.fishki.net/upload/post/2017/03/19/2245758/tn/02-funny-cat-wallpapercat-wallpaper.jpg">
             </div>
             <div class="card-content">
-              <p class="col s6 left-align grey-text text-darken-4">Anonimus #1</p>
               <p class="col s6 right-align grey-text text-darken-4">time:time</p>
           </div>
         </div>
       </div>
         </div>
-
-
-
 </div>
 
-
+      <!-- кнопка -->
       <div class="fixed-action-btn horizontal">
         <a class="btn-floating btn-large red">
         <i class="large material-icons">add</i>
@@ -107,8 +139,5 @@
       <script type="text/javascript" src="script.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
-      <script src="//cdn.kaazing.com/releases/enterprise.javascript.client/4.1.0/WebSocket.js"></script>
-      <script src="//cdn.kaazing.com/releases/enterprise.javascript.client/4.1.0/AmqpClient.js"></script>
-      <script src="//cdn.kaazing.com/releases/enterprise.javascript.client/4.1.0/JmsClient.js"></script>
     </body>
   </html>
