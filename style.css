@@ -26,9 +26,14 @@ html {
 
 
 .card {
-      margin: .5rem 15px -9rem 45px !important;
+      margin: 3.5rem 32px -11rem 44px !important;
       border-radius: 20px;
 }
+
+/* .card:last-child {
+  margin-bottom: 15px !important;
+} */
+
 .card-content {
   padding: 15px !important;
 }
@@ -39,4 +44,76 @@ p {
 
 input {
   display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#photo {
+  background-color: white;
+  position: relative;
+  z-index: auto;
+  width: 70%;
+  height: 575px;
+  overflow-y: hidden;
+}
+
+#btns {
+  margin: 0;
+}
+
+.photo-btns {
+  background-color: transparent;
+  box-shadow: none;
+  margin-bottom: 20px;
+}
+
+video {
+  width: 100%;
+  height: 83%;
+}
+
+#draw {
+  background-color: white;
+  position: relative;
+  z-index: auto;
+  width: 70%;
+  height: 575px;
+}
+
+canvas {
+  width: 100%;
+  height: 500px;
+}
+
+.draw {
+  width: 20px;
+  height: 20px;
+}
+
+.draw-color {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.colors {
+  box-shadow: none;
+  height: 15px;
+}
+
+.colors > ul li span {
+  color: black;
+  margin-left: 10px;
+  margin-right: 4px;
+}
+
+.colors > ul li span:last-child {
+  margin-left: 30px;
+}
+
+.colors > ul li:nth-child(n+8) {
+  color: black;
+  margin-left: 10px;
+  margin-right: 10px;
 }
