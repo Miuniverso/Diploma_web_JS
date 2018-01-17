@@ -51,7 +51,6 @@ input {
 }
 
 #photo {
-  background-color: white;
   position: relative;
   z-index: auto;
   width: 70%;
@@ -67,6 +66,7 @@ input {
   background-color: transparent;
   box-shadow: none;
   margin-bottom: 20px;
+  margin-top: 0 !important;
 }
 
 video {
