@@ -5,10 +5,22 @@ const inputFile = document.querySelector("input[type=file]");
 const container = document.querySelectorAll('.container')[0];
 const sendCanvas = document.querySelector('.send-canvas');
 const video = document.querySelector('video');
+const image = document.querySelector('.photo-camera');
+const takePhotoBtn = document.querySelector('.take-photo');
+const deletePhotoBtn = document.querySelector('.delete-photo');
+const sendPhotoBtn = document.querySelector('.send-photo');
+
 
 inputFile.addEventListener('change', addFile);
+
 btnCamera.addEventListener('click', useWebCamera);
-drawCanvas.addEventListener('click', draw)
+
+takePhotoBtn.addEventListener('click', takePhoto);
+deletePhotoBtn.addEventListener('click', deletePhoto);
+sendPhotoBtn.addEventListener('click', sendPhoto);
+
+drawCanvas.addEventListener('click', draw);
+
 container.addEventListener('drop', onFilesDrop);
 sendCanvas.addEventListener('click', sendCns)
 container.addEventListener('dragover', event => {
@@ -16,19 +28,46 @@ container.addEventListener('dragover', event => {
   });
 
 
-
 function useWebCamera() {
   document.getElementById('photo').classList.remove('hidden');
-
   navigator.mediaDevices
     .getUserMedia({video: true, audio: false})
     .then((stream) => {
       video.src = URL.createObjectURL(stream);
       video.play();
     })
-    .catch(err => console.warn('oh noes'));
+    .catch(err => console.log("There was an error with accessing the camera stream: " + err.name, err.message));
 };
 
+
+function takePhoto(e) {
+  e.preventDefault();
+   const photo = catchPhoto();
+   image.setAttribute('src', photo);
+   deletePhotoBtn.classList.remove("disabled");
+   video.pause();
+};
+
+function deletePhoto(e) {
+  e.preventDefault();
+  image.setAttribute('src', "");
+  deletePhotoBtn.classList.add("disabled");
+  video.play();
+}
+
+function catchPhoto() {
+  const photoCanvas = document.getElementById('photo-canvas');
+  const ctx = photoCanvas.getContext('2d');
+  const width = video.videoWidth;
+  const height = video.videoHeight;
+
+  if (width && height) {
+    photoCanvas.width = width;
+    photoCanvas.height = height;
+    context.drawImage(video, 0, 0, width, height);
+    return photoCanvas.toDataURL('image/png');
+  }
+};
 
 
 function draw() {
