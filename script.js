@@ -72,6 +72,10 @@ function catchPhoto() {
   }
 };
 
+function sendPhoto() {
+  document.getElementById('photo').classList.add('hidden');
+}
+
 
 function draw() {
   console.log('draw');
