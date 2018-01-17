@@ -42,15 +42,15 @@ function useWebCamera() {
 
 function takePhoto(e) {
   e.preventDefault();
-   const photo = catchPhoto();
-   image.setAttribute('src', photo);
+//    const photo = catchPhoto();
+//    image.setAttribute('src', photo);
    deletePhotoBtn.classList.remove("disabled");
    video.pause();
 };
 
 function deletePhoto(e) {
-  e.preventDefault();
-  image.setAttribute('src', "");
+//   e.preventDefault();
+//   image.setAttribute('src', "");
   deletePhotoBtn.classList.add("disabled");
   video.play();
 }
