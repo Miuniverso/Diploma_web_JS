@@ -44,6 +44,7 @@ function takePhoto(e) {
   e.preventDefault();
 //    const photo = catchPhoto();
 //    image.setAttribute('src', photo);
+   sendPhotoBtn.classList.remove("disabled");
    deletePhotoBtn.classList.remove("disabled");
    video.pause();
 };
@@ -51,6 +52,7 @@ function takePhoto(e) {
 function deletePhoto(e) {
 //   e.preventDefault();
 //   image.setAttribute('src', "");
+  sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
   video.play();
 }
