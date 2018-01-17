@@ -64,7 +64,7 @@ function catchPhoto() {
   if (width && height) {
     photoCanvas.width = width;
     photoCanvas.height = height;
-    context.drawImage(video, 0, 0, width, height);
+    ctx.drawImage(video, 0, 0, width, height);
     return photoCanvas.toDataURL('image/png');
   }
 };
