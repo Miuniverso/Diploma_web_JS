@@ -1,3 +1,5 @@
+'use strict';
+
 const btnFile = document.querySelector('.file');
 const btnCamera = document.querySelector('.camera');
 const drawCanvas = document.querySelector('.brush');
@@ -20,11 +22,12 @@ deletePhotoBtn.addEventListener('click', deletePhoto);
 sendPhotoBtn.addEventListener('click', sendPhoto);
 
 drawCanvas.addEventListener('click', draw);
+sendCanvas.addEventListener('click', sendCns)
 
 container.addEventListener('drop', onFilesDrop);
-sendCanvas.addEventListener('click', sendCns)
 container.addEventListener('dragover', event => {
   event.preventDefault();
+  container.style.border = '2px dashed grey';
   });
 
 
@@ -40,18 +43,13 @@ function useWebCamera() {
 };
 
 
-function takePhoto(e) {
-  e.preventDefault();
-//    const photo = catchPhoto();
-//    image.setAttribute('src', photo);
+function takePhoto() {
    sendPhotoBtn.classList.remove("disabled");
    deletePhotoBtn.classList.remove("disabled");
    video.pause();
 };
 
 function deletePhoto(e) {
-//   e.preventDefault();
-//   image.setAttribute('src', "");
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
   video.play();
@@ -73,7 +71,11 @@ function catchPhoto() {
 };
 
 function sendPhoto() {
+  video.pause();
+  sendPhotoBtn.classList.add("disabled");
+  deletePhotoBtn.classList.add("disabled");
   document.getElementById('photo').classList.add('hidden');
+
 }
 
 
@@ -83,32 +85,32 @@ function draw() {
 };
 
 function sendCns() {
+  canvas.clearRect(0, 0, w, h);
   console.log('send canvas!');
   document.querySelector('#draw').classList.add('hidden');
   };
 
 
-let canvasBody = document.getElementById("draw-canvas"),
-    canvas = canvasBody.getContext("2d"),
+let canvasBody = document.getElementById("draw-canvas");
+let canvas = canvasBody.getContext("2d");
 
-    w = canvasBody.width = canvas.width = window.innerWidth,
-    h = canvasBody.height = canvas.height = window.innerHeight,
-    tick = 0,
-    newTick = tick + 1,
-    painting = false;
-    lastX = 0,
-    lastY = 0,
-    canvas.lineJoin = 'round';
-    canvas.lineCap = 'round';
-    canvas.lineWidth = 20;
-    canvas.strokeStyle = "blue";
-
+let w = canvasBody.width = canvas.width = window.innerWidth;
+let h = canvasBody.height = canvas.height = window.innerHeight;
+let tick = 0;
+let newTick = tick + 1;
+let painting = false;
+let lastX = 0;
+let lastY = 0;
+canvas.lineJoin = 'round';
+canvas.lineCap = 'round';
+canvas.lineWidth = 20;
+canvas.strokeStyle = "blue";
 
   // рисуем
   // при нажатии левой клавиши ловим положение курсора, чтобы с этой точки рисовать линию (изначально координаты (0, 0) )
   canvasBody.onmousedown = function(evt) {
-    const posX = evt.pageX,
-          posY = evt.pageY;
+    const posX = evt.pageX;
+    const posY = evt.pageY;
     [lastX, lastY] = [posX, posY]
     painting = true;
   };
@@ -117,7 +119,6 @@ let canvasBody = document.getElementById("draw-canvas"),
   canvasBody.onmouseup = function() {
     painting = false;
   };
-
 
   // курсор за гранью полотна
   canvasBody.addEventListener("mouseleave", (evt) => {
@@ -131,8 +132,8 @@ let canvasBody = document.getElementById("draw-canvas"),
 
   // процесс рисования
   canvasBody.addEventListener("mousemove", function(evt) {
-    const posX = evt.pageX,
-          posY = evt.pageY;
+    const posX = evt.pageX;
+    const posY = evt.pageY;
 
     // если рисуем
     if(painting) {
@@ -145,13 +146,41 @@ let canvasBody = document.getElementById("draw-canvas"),
         canvas.lineTo(posX, posY);
         canvas.stroke();
         [lastX, lastY] = [posX, posY];
-        console.log('Пошла рисовка!', canvas.lineWidth);
       }
     }
 });
 
 
+let colorBtns = document.querySelectorAll('.draw');
+
+Array.from(colorBtns).forEach(btn => {
+  btn.addEventListener('click', changeColor);
+  });
+
+// СМЕНА ЦВЕТА
+function changeColor() {
+  let color = getComputedStyle(event.currentTarget);
+  canvas.strokeStyle = color.backgroundColor;
+  console.log(color.backgroundColor)
+};
+
+let widths = document.querySelectorAll('.line-width');
+
+Array.from(widths).forEach(width => {
+  width.addEventListener('click', changeWidth);
+  });
+
+// СМЕНА ТОЛЩИНЫ ЛИНИИ
+function changeWidth() {
+  let width = event.currentTarget.textContent;
+  canvas.lineWidth = width;
+  console.log(width)
+}
+
+
+
 function onFilesDrop(event) {
+  container.style.border = none;
   event.preventDefault();
   // Загрузка фото
   const files = Array.from(event.dataTransfer.files);
