@@ -213,6 +213,18 @@ function sendFile(file) {
   xhr.send(file);
 }
 
+const connection = new WebSocket('wss://stream-chat-demo.herokuapp.com')
+
+connection.addEventListener('message', (message) => {
+	const resData;
+  try {
+    resData = JSON.parse(message.data);
+  } catch(error) {
+		console.log(error);
+  }
+// обработка данных resData
+}
+
 function addFile(event) {
   const files = Array.from(event.target.files);
 
