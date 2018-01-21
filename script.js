@@ -12,18 +12,21 @@ const takePhotoBtn = document.querySelector('.take-photo');
 const deletePhotoBtn = document.querySelector('.delete-photo');
 const sendPhotoBtn = document.querySelector('.send-photo');
 
-
+// загрузка файла
 inputFile.addEventListener('change', addFile);
 
+// камера 
 btnCamera.addEventListener('click', useWebCamera);
 
 takePhotoBtn.addEventListener('click', takePhoto);
 deletePhotoBtn.addEventListener('click', deletePhoto);
 sendPhotoBtn.addEventListener('click', sendPhoto);
 
+// рисование на хослте
 drawCanvas.addEventListener('click', draw);
 sendCanvas.addEventListener('click', sendCns)
 
+// перетаскивание файла
 container.addEventListener('drop', onFilesDrop);
 container.addEventListener('dragover', event => {
   event.preventDefault();
@@ -49,12 +52,13 @@ function takePhoto() {
    video.pause();
 };
 
-function deletePhoto(e) {
+function deletePhoto() {
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
   video.play();
 }
 
+// момент снимка (canvas)
 function catchPhoto() {
   const photoCanvas = document.getElementById('photo-canvas');
   const ctx = photoCanvas.getContext('2d');
@@ -70,7 +74,10 @@ function catchPhoto() {
   }
 };
 
+// отправка фото на сервер
 function sendPhoto() {
+  const myPhoto = catchPhoto();
+  sendFile(myPhoto);
   video.pause();
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
@@ -79,28 +86,22 @@ function sendPhoto() {
 }
 
 
+// рисование
 function draw() {
   console.log('draw');
   document.querySelector('#draw').classList.remove('hidden');
 };
 
-function sendCns() {
-  canvas.clearRect(0, 0, w, h);
-  console.log('send canvas!');
-  document.querySelector('#draw').classList.add('hidden');
-  };
-
-
-let canvasBody = document.getElementById("draw-canvas");
-let canvas = canvasBody.getContext("2d");
-
-let w = canvasBody.width = canvas.width = window.innerWidth;
-let h = canvasBody.height = canvas.height = window.innerHeight;
-let tick = 0;
-let newTick = tick + 1;
-let painting = false;
-let lastX = 0;
-let lastY = 0;
+const canvasBody = document.getElementById("draw-canvas");
+const canvas = canvasBody.getContext("2d");
+const canvasDraw = canvasBody.toDataURL('image/png');
+const w = canvasBody.width = canvas.width = window.innerWidth;
+const h = canvasBody.height = canvas.height = window.innerHeight;
+const tick = 0;
+const newTick = tick + 1;
+const painting = false;
+const lastX = 0;
+const lastY = 0;
 canvas.lineJoin = 'round';
 canvas.lineCap = 'round';
 canvas.lineWidth = 20;
@@ -178,6 +179,14 @@ function changeWidth() {
 }
 
 
+// отправка холста
+function sendCns() {
+  sendFile(canvasDraw);
+  canvas.clearRect(0, 0, w, h);
+  console.log('send canvas!');
+  document.querySelector('#draw').classList.add('hidden');
+  };
+
 
 function onFilesDrop(event) {
   container.style.border = none;
@@ -186,9 +195,23 @@ function onFilesDrop(event) {
   const files = Array.from(event.dataTransfer.files);
   files.forEach(file => {
     console.log(file.name)
+    sendFile(file);
   });
 };
 
+
+// отправка файла на сервер
+function sendFile(file) {
+  console.log('Пошло на отправку',file);
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/files', true);
+  xhr.addEventListener('load', () => {
+  if (xhr.status === 200) {
+  console.log(`Файл ${file.name} сохранен.`);
+  }
+  });
+  xhr.send(file);
+}
 
 function addFile(event) {
   const files = Array.from(event.target.files);
