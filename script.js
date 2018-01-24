@@ -77,7 +77,7 @@ function catchPhoto() {
 // отправка фото на сервер
 function sendPhoto() {
   const myPhoto = catchPhoto();
-  sendFile(myPhoto);
+//   sendFile(myPhoto);
   video.pause();
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
@@ -97,11 +97,11 @@ const canvas = canvasBody.getContext("2d");
 const canvasDraw = canvasBody.toDataURL('image/png');
 const w = canvasBody.width = canvas.width = window.innerWidth;
 const h = canvasBody.height = canvas.height = window.innerHeight;
-const tick = 0;
-const newTick = tick + 1;
-const painting = false;
-const lastX = 0;
-const lastY = 0;
+let tick = 0;
+let newTick = tick + 1;
+let painting = false;
+let lastX = 0;
+let lastY = 0;
 canvas.lineJoin = 'round';
 canvas.lineCap = 'round';
 canvas.lineWidth = 20;
@@ -133,8 +133,8 @@ canvas.strokeStyle = "blue";
 
   // процесс рисования
   canvasBody.addEventListener("mousemove", function(evt) {
-    const posX = evt.pageX;
-    const posY = evt.pageY;
+    let posX = evt.pageX;
+    let posY = evt.pageY;
 
     // если рисуем
     if(painting) {
@@ -181,7 +181,7 @@ function changeWidth() {
 
 // отправка холста
 function sendCns() {
-  sendFile(canvasDraw);
+//   sendFile(canvasDraw);
   canvas.clearRect(0, 0, w, h);
   console.log('send canvas!');
   document.querySelector('#draw').classList.add('hidden');
