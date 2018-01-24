@@ -15,7 +15,7 @@ const sendPhotoBtn = document.querySelector('.send-photo');
 // загрузка файла
 inputFile.addEventListener('change', addFile);
 
-// камера 
+// камера
 btnCamera.addEventListener('click', useWebCamera);
 
 takePhotoBtn.addEventListener('click', takePhoto);
@@ -77,7 +77,7 @@ function catchPhoto() {
 // отправка фото на сервер
 function sendPhoto() {
   const myPhoto = catchPhoto();
-//   sendFile(myPhoto);
+  // sendFile(myPhoto);
   video.pause();
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
@@ -133,8 +133,8 @@ canvas.strokeStyle = "blue";
 
   // процесс рисования
   canvasBody.addEventListener("mousemove", function(evt) {
-    let posX = evt.pageX;
-    let posY = evt.pageY;
+    const posX = evt.pageX;
+    const posY = evt.pageY;
 
     // если рисуем
     if(painting) {
@@ -181,7 +181,7 @@ function changeWidth() {
 
 // отправка холста
 function sendCns() {
-//   sendFile(canvasDraw);
+  // sendFile(canvasDraw);
   canvas.clearRect(0, 0, w, h);
   console.log('send canvas!');
   document.querySelector('#draw').classList.add('hidden');
@@ -211,18 +211,6 @@ function sendFile(file) {
   }
   });
   xhr.send(file);
-}
-
-const connection = new WebSocket('wss://stream-chat-demo.herokuapp.com')
-
-connection.addEventListener('message', (message) => {
-	const resData;
-  try {
-    resData = JSON.parse(message.data);
-  } catch(error) {
-		console.log(error);
-  }
-// обработка данных resData
 }
 
 function addFile(event) {
