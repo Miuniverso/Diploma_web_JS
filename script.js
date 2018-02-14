@@ -77,7 +77,7 @@ function catchPhoto() {
 // отправка фото на сервер
 function sendPhoto() {
   const myPhoto = catchPhoto();
-  // sendFile(myPhoto);
+  sendFile(myPhoto);
   video.pause();
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
@@ -181,7 +181,7 @@ function changeWidth() {
 
 // отправка холста
 function sendCns() {
-  // sendFile(canvasDraw);
+  sendFile(canvasDraw);
   canvas.clearRect(0, 0, w, h);
   console.log('send canvas!');
   document.querySelector('#draw').classList.add('hidden');
@@ -204,10 +204,10 @@ function onFilesDrop(event) {
 function sendFile(file) {
   console.log('Пошло на отправку',file);
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', '/api/files', true);
+  xhr.open('POST', 'https://neto-api.herokuapp.com/picchat', true);
   xhr.addEventListener('load', () => {
   if (xhr.status === 200) {
-  console.log(`Файл ${file.name} сохранен.`);
+  console.log(`Файл ${file.name} отправлен.`);
   }
   });
   xhr.send(file);
