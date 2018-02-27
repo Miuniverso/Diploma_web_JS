@@ -176,7 +176,7 @@ canvas.strokeStyle = "blue";
         canvas.beginPath();
         canvas.moveTo(lastX, lastY);
         canvas.lineTo( evt.pageX, evt.pageY);
-        console.log('Ширина',w,'Высота',h,'ОТ сюда',lastX, lastY,'Сюда',evt.pageX, evt.pageY)
+//         console.log('Ширина',w,'Высота',h,'ОТ сюда',lastX, lastY,'Сюда',evt.pageX, evt.pageY)
         canvas.stroke();
         [lastX, lastY] = [evt.pageX, evt.pageY];
       }
