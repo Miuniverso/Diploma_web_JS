@@ -263,7 +263,7 @@ function sendFile(file) {
 
 const conection = new WebSocket('ws://neto-api.herokuapp.com/picchat');
 
-conection.addEventListener('message' event => {
+conection.addEventListener('message', event => {
   try {
     let resImage = JSON.parse(event.data)
   } catch(error) {
