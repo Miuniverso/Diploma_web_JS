@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 const btnFile = document.querySelector('.file');
 const btnCamera = document.querySelector('.camera');
 const drawCanvas = document.querySelector('.brush');
@@ -13,24 +15,32 @@ const deletePhotoBtn = document.querySelector('.delete-photo');
 const sendPhotoBtn = document.querySelector('.send-photo');
 
 // загрузка файла
+
 inputFile.addEventListener('change', addFile);
 
 // камера
-btnCamera.addEventListener('click', useWebCamera);
 
+btnCamera.addEventListener('click', useWebCamera);
 takePhotoBtn.addEventListener('click', takePhoto);
 deletePhotoBtn.addEventListener('click', deletePhoto);
 sendPhotoBtn.addEventListener('click', sendPhoto);
 
+
+
 // рисование на хослте
+
 drawCanvas.addEventListener('click', draw);
 sendCanvas.addEventListener('click', sendCns)
 
+
+
 // перетаскивание файла
+
 container.addEventListener('drop', onFilesDrop);
 container.addEventListener('dragover', event => {
   event.preventDefault();
   container.style.border = '2px dashed grey';
+
   });
 
 
@@ -50,20 +60,27 @@ function takePhoto() {
    sendPhotoBtn.classList.remove("disabled");
    deletePhotoBtn.classList.remove("disabled");
    video.pause();
+
 };
+
+
 
 function deletePhoto() {
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
   video.play();
-}
+};
+
+
 
 // момент снимка (canvas)
+
 function catchPhoto() {
   const photoCanvas = document.getElementById('photo-canvas');
   const ctx = photoCanvas.getContext('2d');
   const width = video.videoWidth;
   const height = video.videoHeight;
+
 
   if (width && height) {
     photoCanvas.width = width;
@@ -74,29 +91,34 @@ function catchPhoto() {
   }
 };
 
+
+
 // отправка фото на сервер
+
 function sendPhoto() {
   const myPhoto = catchPhoto();
-  sendFile(myPhoto);
+  // sendFile(myPhoto);
   video.pause();
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
   document.getElementById('photo').classList.add('hidden');
-
 }
 
 
 // рисование
+
 function draw() {
   console.log('draw');
   document.querySelector('#draw').classList.remove('hidden');
+
 };
+
 
 const canvasBody = document.getElementById("draw-canvas");
 const canvas = canvasBody.getContext("2d");
 const canvasDraw = canvasBody.toDataURL('image/png');
-const w = canvasBody.width = canvas.width = window.innerWidth;
-const h = canvasBody.height = canvas.height = window.innerHeight;
+let w = canvasBody.width;
+let h = canvasBody.height;
 let tick = 0;
 let newTick = tick + 1;
 let painting = false;
@@ -109,14 +131,16 @@ canvas.strokeStyle = "blue";
 
   // рисуем
   // при нажатии левой клавиши ловим положение курсора, чтобы с этой точки рисовать линию (изначально координаты (0, 0) )
+
   canvasBody.onmousedown = function(evt) {
-    const posX = evt.pageX;
-    const posY = evt.pageY;
+    let posX = evt.pageX;
+    let posY = evt.pageY;
     [lastX, lastY] = [posX, posY]
     painting = true;
   };
 
   // не рисуем
+
   canvasBody.onmouseup = function() {
     painting = false;
   };
@@ -127,38 +151,53 @@ canvas.strokeStyle = "blue";
   });
 
   // чистим холст
-  canvasBody.addEventListener('dblclick',  function() {
+
+  canvasBody.addEventListener('dblclick',  (evt) => {
+    evt.preventDefault();
     canvas.clearRect(0, 0, w, h);
+
   });
 
-  // процесс рисования
-  canvasBody.addEventListener("mousemove", function(evt) {
-    const posX = evt.pageX;
-    const posY = evt.pageY;
 
+
+  // процесс рисования
+
+  canvasBody.addEventListener("mousemove", function(evt) {
+    // let posX = evt.pageX;
+    // let posY = evt.pageY;
     // если рисуем
+
     if(painting) {
       ++tick;
 
       // если пошла итерация
+
       if(newTick) {
         canvas.beginPath();
         canvas.moveTo(lastX, lastY);
-        canvas.lineTo(posX, posY);
+        canvas.lineTo( evt.pageX, evt.pageY);
+        console.log('Ширина',w,'Высота',h,'ОТ сюда',lastX, lastY,'Сюда',evt.pageX, evt.pageY)
         canvas.stroke();
-        [lastX, lastY] = [posX, posY];
+        [lastX, lastY] = [evt.pageX, evt.pageY];
       }
     }
 });
 
 
+
+
+
 let colorBtns = document.querySelectorAll('.draw');
+
 
 Array.from(colorBtns).forEach(btn => {
   btn.addEventListener('click', changeColor);
   });
 
+
+
 // СМЕНА ЦВЕТА
+
 function changeColor() {
   let color = getComputedStyle(event.currentTarget);
   canvas.strokeStyle = color.backgroundColor;
@@ -171,7 +210,9 @@ Array.from(widths).forEach(width => {
   width.addEventListener('click', changeWidth);
   });
 
+
 // СМЕНА ТОЛЩИНЫ ЛИНИИ
+
 function changeWidth() {
   let width = event.currentTarget.textContent;
   canvas.lineWidth = width;
@@ -179,13 +220,16 @@ function changeWidth() {
 }
 
 
+
 // отправка холста
+
 function sendCns() {
   sendFile(canvasDraw);
   canvas.clearRect(0, 0, w, h);
   console.log('send canvas!');
   document.querySelector('#draw').classList.add('hidden');
   };
+
 
 
 function onFilesDrop(event) {
@@ -200,7 +244,9 @@ function onFilesDrop(event) {
 };
 
 
+
 // отправка файла на сервер
+
 function sendFile(file) {
   console.log('Пошло на отправку',file);
   const xhr = new XMLHttpRequest();
@@ -213,41 +259,57 @@ function sendFile(file) {
   xhr.send(file);
 }
 
-function addFile(event) {
-  const files = Array.from(event.target.files);
-
-  files.forEach(file => {
 
 
-    // const row = document.createElement('div');
-    // row.className = 'row';
-    //
-    // const col = document.createElement('div');
-    // col.className = 'col s6';
-    //
-    // const card = document.createElement('card');
-    // card.className = 'card';
-    //
-    // const imgContainer = document.createElement('div');
-    // imgContainer.className = 'card-image';
-    //
-    // const img = document.createElement('div');
-    // img.src = URL.createObjectURL(file);
-    // console.log(img.src)
-    //
-    // img.addEventListener('load', event => {
-    // URL.revokeObjectURL(event.target.src);
-    // });
-    //
-    // imgContainer.appendChild(img);
-    // card.appendChild(imgContainer);
-    // col.appendChild(card);
-    // row.appendChild(col);
-    // container.appendChild(row);
-    console.log(file.name)
-  })
+const conection = new WebSocket('ws://neto-api.herokuapp.com/picchat');
 
-  // files.forEach(file => {
-  //   console.log(file.name)
-  // });
-}
+conection.addEventListener('message' event => {
+  try {
+    let resImage = JSON.parse(event.data)
+  } catch(error) {
+    console.log(error)
+  }
+    addFile(resImage.data)
+});
+
+
+function addFile(file) {
+  const row = document.createElement('div');
+  row.className = 'row';
+
+  const col = document.createElement('div');
+  col.className = 'col s6';
+
+  const card = document.createElement('card');
+  card.className = 'card';
+
+  const imgContainer = document.createElement('div');
+  imgContainer.className = 'card-image';
+
+  const img = document.createElement('div');
+  img.src = URL.createObjectURL(file.image);
+  console.log(img.src)
+
+  img.addEventListener('load', event => {
+  URL.revokeObjectURL(event.target.src);
+  });
+
+
+
+  imgContainer.appendChild(img);
+
+  card.appendChild(imgContainer);
+
+  col.appendChild(card);
+
+  row.appendChild(col);
+
+  container.appendChild(row);
+
+};
+
+
+
+
+
+  
