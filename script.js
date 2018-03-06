@@ -97,7 +97,7 @@ function catchPhoto() {
 
 function sendPhoto() {
   const myPhoto = catchPhoto();
-  // sendFile(myPhoto);
+  sendFile(myPhoto);
   video.pause();
   sendPhotoBtn.classList.add("disabled");
   deletePhotoBtn.classList.add("disabled");
@@ -257,13 +257,25 @@ function sendFile(file) {
   }
   });
   xhr.send(file);
+};
+
+
+let timestamp = Date.now();
+
+function timeString(timestamp) {
+	const date = new Date(timestamp)
+	const hour = date.getHours() % 24
+	let min = date.getMinutes()
+	min = min < 10 ? `0${min}` : min
+	
+	return `${hour}:${min}`
 }
 
 
 
-const conection = new WebSocket('ws://neto-api.herokuapp.com/picchat');
+const connection = new WebSocket('wss://neto-api.herokuapp.com/picchat');
 
-conection.addEventListener('message', event => {
+connection.addEventListener('message', event => {
   try {
     let resImage = JSON.parse(event.data)
   } catch(error) {
@@ -288,17 +300,25 @@ function addFile(file) {
 
   const img = document.createElement('div');
   img.src = URL.createObjectURL(file.image);
-  console.log(img.src)
 
   img.addEventListener('load', event => {
   URL.revokeObjectURL(event.target.src);
   });
+  
+  const timeWrapper = document.createElement('div');
+  timeWrapper.className = 'card-content';
+  
+  const time = document.createElement('p');
+  time.className = 'col s6 right-align grey-text text-darken-4';
+  p.innerText = timeString(timestamp);
 
 
+  timeWrapper.appendChild(time);
 
   imgContainer.appendChild(img);
 
   card.appendChild(imgContainer);
+  card.appendChild(timeWrapper);
 
   col.appendChild(card);
 
