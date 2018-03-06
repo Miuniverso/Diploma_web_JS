@@ -248,15 +248,18 @@ function onFilesDrop(event) {
 // отправка файла на сервер
 
 function sendFile(file) {
+  const formData = new FormData();
+  formData.append('file', file);
   console.log('Пошло на отправку',file);
   const xhr = new XMLHttpRequest();
   xhr.open('POST', 'https://neto-api.herokuapp.com/picchat', true);
+  xhr.setRequestHeader('Content-Type', 'multipart/form-data');	
   xhr.addEventListener('load', () => {
   if (xhr.status === 200) {
-  console.log(`Файл ${file.name} отправлен.`);
+  console.log(`Файл ${formData.file.name} отправлен.`);
   }
   });
-  xhr.send(file);
+  xhr.send(formData);
 };
 
 
