@@ -276,8 +276,9 @@ function timeString(timestamp) {
 const connection = new WebSocket('wss://neto-api.herokuapp.com/picchat');
 
 connection.addEventListener('message', event => {
+let resImage
   try {
-    let resImage = JSON.parse(event.data)
+    resImage = JSON.parse(event.data)
   } catch(error) {
     console.log(error)
   }
