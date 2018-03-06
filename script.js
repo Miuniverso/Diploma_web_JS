@@ -16,7 +16,7 @@ const sendPhotoBtn = document.querySelector('.send-photo');
 
 // загрузка файла
 
-inputFile.addEventListener('change', addFile);
+inputFile.addEventListener('change', sendFile);
 
 // камера
 
