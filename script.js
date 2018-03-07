@@ -255,8 +255,10 @@ function sendFile(file) {
   xhr.open('POST', 'https://neto-api.herokuapp.com/picchat', true);
   console.log('Открываю запрос');
   xhr.addEventListener('load', () => {
-  if (xhr.status === 200) {
-  console.log(`Файл ${formData.file.name} отправлен.`);
+    if (xhr.status === 200) {
+      console.log(`Файл ${formData.file.name} отправлен.`);
+  } else {
+     console.log('Ошибка соединения');
   }
   });
   xhr.send(formData);
